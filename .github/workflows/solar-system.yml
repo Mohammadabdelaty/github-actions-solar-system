@@ -26,7 +26,7 @@ jobs:
         - name: Cache NPM dependencies
           uses: actions/cache@v5.0.5
           with:
-            path: ~/.npm
+            path: node-modules
             key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
     
         - name: Install Dependencies
@@ -88,4 +88,4 @@ jobs:
           uses: docker/build-push-action@v7.1.0
           with:
             context: .
-            tags: ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }} 
+            tags: ghcr.io/mohammadabdelaty  /solar-system:${{ github.sha }} 
