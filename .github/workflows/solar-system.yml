@@ -105,8 +105,10 @@ jobs:
       name: dev-deploy
       runs-on: ubuntu-latest
       needs: docker
-      environment:
-        name: development 
+      outputs:
+        url: ${{ steps.ingress.outputs.APP_INGRESS_URL }}
+      # environment:
+      #   name: development 
       steps:
         - name: install cluster
           uses: helm/kind-action@v1.14.0
@@ -124,10 +126,14 @@ jobs:
             echo "kubectl returned $?"
             kubectl -n default get pod
             sleep 10
+        - name: ingress
+          id: ingress
+          run: |
+            echo "APP_INGRESS_URL=$(kubectl get ingress <ingress-name> -n <namespace> -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_OUTPUT"
 # dev-deploy job
     integration-test:
           needs: dev-deploy
           uses: ./.github/workflows/reusable-workflow.yml
           with:
-            ingress-url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
+            ingress-url: ${{ needs.dev-deploy.outputs.url }}
 # next job
