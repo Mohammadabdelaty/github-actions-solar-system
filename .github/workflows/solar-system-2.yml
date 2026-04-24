@@ -31,11 +31,11 @@ jobs:
             sleep 10s
             kubectl get svc -n ingress-nginx
 
-        # - name: ingress
-        #   id: ingress
-        #   run: |
-        #     echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_ENV
-        #     echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_OUTPUT
+        - name: ingress
+          id: ingress
+          run: |
+            echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller  -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_ENV
+            echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_OUTPUT
         
         - name: checkout
           uses: actions/checkout@v6.0.2
@@ -54,7 +54,7 @@ jobs:
 
         - name: mongo-secret
           run: |
-            kubectl run ${{ vars.NAMESPACE }} create secret generic mongodb-creds \
+            kubectl run -n ${{ vars.NAMESPACE }} create secret generic mongodb-creds \
             --from-literal=MONGO_URI=${{ env.MONGO_URI }} \
             --from-literal=MONGO_USERNAME=${{ vars.MONGO_USERNAME }} \
             --from-literal=MONGO_PASSWORD=${{ vars.MONGO_PASSWORD }} \
