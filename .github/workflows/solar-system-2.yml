@@ -47,7 +47,7 @@ jobs:
             tokenSuffix: '_}_'
             files: '["${{ vars.KUBE_DIR }}/*.yaml"]'
           env:
-            NAMESPACE: ${{ vars.NAEMASPCE }}
+            NAMESPACE: ${{ vars.NAMESPACE }}
             IMAGE: ghcr.io/${REPO_OWNER_LC}/solar-system:${{ github.sha }}
             REPLICAS: ${{ vars.REPLICAS }} 
             INGRESS_IP: ${{ env.INGRESS_IP }}
