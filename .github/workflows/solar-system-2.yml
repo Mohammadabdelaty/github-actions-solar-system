@@ -23,6 +23,12 @@ jobs:
         - name: install cluster
           uses: helm/kind-action@v1.14.0
 
+        - name: install ingress
+          run: |
+            helm upgrade --install ingress-nginx ingress-nginx \
+            --repo https://kubernetes.github.io/ingress-nginx \
+            --namespace ingress-nginx --create-namespace
+
         - name: ingress
           id: ingress
           run: |
