@@ -102,7 +102,7 @@ jobs:
             tags: ghcr.io/mohammadabdelaty/solar-system:${{ github.sha }} 
     
     dev-deploy:
-      name: de-deploy
+      name: dev-deploy
       runs-on: ubuntu-latest
       needs: docker
       environment:
@@ -124,4 +124,14 @@ jobs:
             echo "kubectl returned $?"
             kubectl -n default get pod
             sleep 10
-        
+    integration-testing:
+      name: integration-testing
+      runs-on: ubuntu-latest
+      needs: dev-deploy
+      environment:
+        name: development 
+      steps:
+        - name: integrations
+          uses: ./.github/workflows/reusable-workflow.yml.
+          with:
+            ingress-url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
