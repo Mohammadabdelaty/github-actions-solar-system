@@ -28,12 +28,13 @@ jobs:
             helm upgrade --install ingress-nginx ingress-nginx \
             --repo https://kubernetes.github.io/ingress-nginx \
             --namespace ingress-nginx --create-namespace
+            sleep 10s
             kubectl get svc -n ingress-nginx
 
         - name: ingress
           id: ingress
           run: |
-            INGRESS_IP=$(kubectl get svc ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            INGRESS_IP=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
             echo "INGRESS_IP=${INGRESS_IP}" >> $GITHUB_ENV
       
         - name: checkout
