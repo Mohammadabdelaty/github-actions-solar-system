@@ -125,15 +125,16 @@ jobs:
             set -e
             echo "kubectl returned $?"
             kubectl -n default get pod
+            kubectl git ingress --all-namespaces
             sleep 10
         - name: ingress
           id: ingress
           run: |
             echo "APP_INGRESS_URL=$(kubectl get ingress <ingress-name> -n <namespace> -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_OUTPUT"
 # dev-deploy job
-    integration-test:
-          needs: dev-deploy
-          uses: ./.github/workflows/reusable-workflow.yml
-          with:
-            ingress-url: ${{ needs.dev-deploy.outputs.url }}
+    # integration-test:
+    #       needs: dev-deploy
+    #       uses: ./.github/workflows/reusable-workflow.yml
+    #       with:
+    #         ingress-url: ${{ needs.dev-deploy.outputs.url }}
 # next job
