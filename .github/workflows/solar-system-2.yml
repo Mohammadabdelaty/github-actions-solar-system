@@ -15,8 +15,8 @@ jobs:
       name: dev-deploy
       runs-on: ubuntu-latest
       # needs: docker
-      outputs:
-        url: ${{ steps.ingress.outputs.INGRESS_IP }}
+      # outputs:
+      #   url: ${{ steps.ingress.outputs.INGRESS_IP }}
       environment:
         name: development 
       steps:
@@ -35,7 +35,6 @@ jobs:
           id: ingress
           run: |
             echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller  -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_ENV
-            echo "INGRESS_IP=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> "$GITHUB_OUTPUT
         
         - name: checkout
           uses: actions/checkout@v6.0.2
