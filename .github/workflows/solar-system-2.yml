@@ -41,6 +41,7 @@ jobs:
 
         - name: deploy
           run: |
+            ls -l
             kubectl apply -f ${{ vars.KUBE_DIR }}
       
         # - name: replace-vars
