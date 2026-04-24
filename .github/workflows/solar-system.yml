@@ -132,6 +132,6 @@ jobs:
         name: development 
       steps:
         - name: integrations
-          uses: ./.github/workflows/reusable-workflow.yml.
+          uses: ./.github/workflows/reusable-workflow.yml
           with:
             ingress-url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
